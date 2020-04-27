@@ -1,9 +1,15 @@
-import java.io.*;
+
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Random;
 
 public class FileArray {
   private static final int MAX_VALUE = 1024;
-  private static final int COLUMNS = 5;
+  private static final int PRINT_COLUMS = 5;
 
   private final String fileName;
 
@@ -12,7 +18,7 @@ public class FileArray {
     File file = new File(fileName);
 
     int[] dataOnFile = read();
-    System.out.println(String.format("Read data from file %s",file.getAbsolutePath()));
+    System.out.println(String.format("Read data from file %s", file.getAbsolutePath()));
     System.out.println(String.format(" %s numbers have been read", dataOnFile.length));
   }
 
@@ -29,18 +35,6 @@ public class FileArray {
     System.out.println(String.format("File '%s' have been created with %s numbers", file.getAbsolutePath(), dim));
   }
 
-  private static int numberOfDigit(int number) {
-    return String.valueOf(number).length();
-  }
-
-  private static int max(int[] data) {
-    int max = 0;
-    for (int number : data) {
-      max = Math.max(number, max);
-    }
-    return max;
-  }
-
   public void print() throws IOException {
     int[] dataOnFile = read();
     String numberFormat = " %" + numberOfDigit(max(dataOnFile)) + "d";
@@ -48,9 +42,9 @@ public class FileArray {
     String headerFormat = "%n[" + limitFormat + "-" + limitFormat + "]";
 
     for (int i = 0; i < dataOnFile.length; i++) {
-      if (i % COLUMNS == 0) {
+      if (i % PRINT_COLUMS == 0) {
         // after first line we need a new line before print line header
-        System.out.print(String.format(headerFormat, i, Math.min(COLUMNS - 1 + i, dataOnFile.length - 1)));
+        System.out.print(String.format(headerFormat, i, Math.min(PRINT_COLUMS - 1 + i, dataOnFile.length - 1)));
       }
       System.out.print(String.format(numberFormat, dataOnFile[i]));
     }
@@ -85,4 +79,21 @@ public class FileArray {
     }
     outputStream.close();
   }
+
+  private static int numberOfDigit(int number) {
+    return String.valueOf(number).length();
+  }
+
+  private static int max(int[] data) {
+    int max = 0;
+    for (int number : data) {
+      max = Math.max(number, max);
+    }
+    return max;
+  }
 }
+
+
+
+
+

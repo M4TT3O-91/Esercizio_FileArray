@@ -8,8 +8,8 @@ import java.io.IOException;
 import java.util.Random;
 
 public class FileArray {
-  private static final int MAX_VALUE = 1024;
-  private static final int PRINT_COLUMS = 5;
+  private static final int MAX_VALUE = 2^10;
+  private static final int PRINT_COLUMNS = 5;
 
   private final String fileName;
 
@@ -18,8 +18,8 @@ public class FileArray {
     File file = new File(fileName);
 
     int[] dataOnFile = read();
-    System.out.println(String.format("Read data from file %s", file.getAbsolutePath()));
-    System.out.println(String.format(" %s numbers have been read", dataOnFile.length));
+    System.out.printf("Read data from file %s%n", file.getAbsolutePath());
+    System.out.printf("%s numbers have been read%n", dataOnFile.length);
   }
 
   public FileArray(String fileName, int dim) throws IOException {
@@ -37,14 +37,14 @@ public class FileArray {
 
   public void print() throws IOException {
     int[] dataOnFile = read();
-    String numberFormat = " %" + numberOfDigit(max(dataOnFile)) + "d";
-    String limitFormat = "%0" + numberOfDigit(dataOnFile.length) + "d";
+    String numberFormat = " %" + digits(max(dataOnFile)) + "d";
+    String limitFormat = "%0" + digits(dataOnFile.length) + "d";
     String headerFormat = "%n[" + limitFormat + "-" + limitFormat + "]";
 
     for (int i = 0; i < dataOnFile.length; i++) {
-      if (i % PRINT_COLUMS == 0) {
+      if (i % PRINT_COLUMNS == 0) {
         // after first line we need a new line before print line header
-        System.out.print(String.format(headerFormat, i, Math.min(PRINT_COLUMS - 1 + i, dataOnFile.length - 1)));
+        System.out.print(String.format(headerFormat, i, Math.min(PRINT_COLUMNS - 1 + i, dataOnFile.length - 1)));
       }
       System.out.print(String.format(numberFormat, dataOnFile[i]));
     }
@@ -80,7 +80,7 @@ public class FileArray {
     outputStream.close();
   }
 
-  private static int numberOfDigit(int number) {
+  private static int digits(int number) {
     return String.valueOf(number).length();
   }
 

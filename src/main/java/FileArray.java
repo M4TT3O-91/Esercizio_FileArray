@@ -3,7 +3,7 @@ import java.util.Random;
 
 public class FileArray {
   private static final int MAX_VALUE = 1024;
-  private static final int NUMBERS_IN_A_ROW = 5;
+  private static final int COLUMNS = 5;
 
   private final String fileName;
 
@@ -48,9 +48,9 @@ public class FileArray {
     String headerFormat = "%n[" + limitFormat + "-" + limitFormat + "]";
 
     for (int i = 0; i < dataOnFile.length; i++) {
-      if (i % NUMBERS_IN_A_ROW == 0) {
+      if (i % COLUMNS == 0) {
         // after first line we need a new line before print line header
-        System.out.print(String.format(headerFormat, i, Math.min(NUMBERS_IN_A_ROW - 1 + i, dataOnFile.length - 1)));
+        System.out.print(String.format(headerFormat, i, Math.min(COLUMNS - 1 + i, dataOnFile.length - 1)));
       }
       System.out.print(String.format(numberFormat, dataOnFile[i]));
     }
@@ -67,26 +67,22 @@ public class FileArray {
 
   private int[] read() throws IOException {
     DataInputStream inputStream = new DataInputStream(new FileInputStream(new File(fileName)));
-
     int size = inputStream.readInt();
     int[] data = new int[size];
 
     for (int i = 0; i < size; i++) {
       data[i] = inputStream.readInt();
     }
-
     inputStream.close();
     return data;
   }
 
   private void write(int[] data) throws IOException {
     DataOutputStream outputStream = new DataOutputStream(new FileOutputStream(new File(fileName)));
-
     outputStream.writeInt(data.length);
     for (int number : data) {
       outputStream.writeInt(number);
     }
-
     outputStream.close();
   }
 }

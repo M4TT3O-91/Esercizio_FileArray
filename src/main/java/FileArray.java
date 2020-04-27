@@ -4,66 +4,64 @@ import java.util.Random;
 public class FileArray {
   private static final int MAX_VALUE = 1024;
   private static final int NUMBERS_IN_A_ROW = 5;
+
   private final String fileName;
 
   public FileArray(String fileName) throws IOException {
     this.fileName = fileName;
     File file = new File(fileName);
 
-    int[] data = read();
-    System.out.println(String.format("read %s numbers from file '%s'", data.length, file.getAbsolutePath()));
+    int[] dataOnFile = read();
+    System.out.println(String.format("Read data from file %s",file.getAbsolutePath()));
+    System.out.println(String.format(" %s numbers have been read", dataOnFile.length));
   }
 
-  public FileArray(String fileName, int size) throws IOException {
+  public FileArray(String fileName, int dim) throws IOException {
     this.fileName = fileName;
     File file = new File(fileName);
-    int[] data = new int[size];
+    int[] data = new int[dim];
     Random numberGenerator = new Random();
 
-    for (int i = 0; i < size; i++) {
+    for (int i = 0; i < dim; i++) {
       data[i] = numberGenerator.nextInt(MAX_VALUE) + 1;
     }
     write(data);
-    System.out.println(String.format("file '%s' created with %s numbers", file.getAbsolutePath(), size));
+    System.out.println(String.format("File '%s' have been created with %s numbers", file.getAbsolutePath(), dim));
   }
 
-  private static int countCharacters(int number) {
+  private static int numberOfDigit(int number) {
     return String.valueOf(number).length();
   }
 
-  private static int findMaxNumber(int[] data) {
-    int maxNumber = 0;
+  private static int max(int[] data) {
+    int max = 0;
     for (int number : data) {
-      maxNumber = Math.max(number, maxNumber);
+      max = Math.max(number, max);
     }
-    return maxNumber;
+    return max;
   }
 
   public void print() throws IOException {
-    int[] data = read();
-    String numberFormat = " %" + countCharacters(findMaxNumber(data)) + "d";
-    String limitFormat = "%0" + countCharacters(data.length) + "d";
+    int[] dataOnFile = read();
+    String numberFormat = " %" + numberOfDigit(max(dataOnFile)) + "d";
+    String limitFormat = "%0" + numberOfDigit(dataOnFile.length) + "d";
     String headerFormat = "%n[" + limitFormat + "-" + limitFormat + "]";
 
-    for (int i = 0; i < data.length; i++) {
+    for (int i = 0; i < dataOnFile.length; i++) {
       if (i % NUMBERS_IN_A_ROW == 0) {
         // after first line we need a new line before print line header
-        System.out.print(String.format(headerFormat, i, Math.min(NUMBERS_IN_A_ROW - 1 + i, data.length - 1)));
+        System.out.print(String.format(headerFormat, i, Math.min(NUMBERS_IN_A_ROW - 1 + i, dataOnFile.length - 1)));
       }
-
-      System.out.print(String.format(numberFormat, data[i]));
+      System.out.print(String.format(numberFormat, dataOnFile[i]));
     }
     System.out.println();
-
   }
 
   public void incrementAll() throws IOException {
     int[] data = read();
-
     for (int i = 0; i < data.length; i++) {
       data[i] = Math.min(data[i] + 1, MAX_VALUE);
     }
-
     write(data);
   }
 

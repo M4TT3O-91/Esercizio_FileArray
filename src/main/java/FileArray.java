@@ -1,4 +1,3 @@
-
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -8,7 +7,7 @@ import java.io.IOException;
 import java.util.Random;
 
 public class FileArray {
-  private static final int MAX_VALUE = 2^10;
+  private static final int UPPER_LIMIT = 1024;
   private static final int PRINT_COLUMNS = 5;
 
   private final String fileName;
@@ -16,10 +15,8 @@ public class FileArray {
   public FileArray(String fileName) throws IOException {
     this.fileName = fileName;
     File file = new File(fileName);
-
     int[] dataOnFile = read();
-    System.out.printf("Read data from file %s%n", file.getAbsolutePath());
-    System.out.printf("%s numbers have been read%n", dataOnFile.length);
+    System.out.println("Read "+dataOnFile.length+" numbers from "+fileName);
   }
 
   public FileArray(String fileName, int dim) throws IOException {
@@ -29,7 +26,7 @@ public class FileArray {
     Random numberGenerator = new Random();
 
     for (int i = 0; i < dim; i++) {
-      data[i] = numberGenerator.nextInt(MAX_VALUE) + 1;
+      data[i] = numberGenerator.nextInt(UPPER_LIMIT) + 1;
     }
     write(data);
     System.out.println(String.format("File '%s' have been created with %s numbers", file.getAbsolutePath(), dim));
@@ -37,16 +34,17 @@ public class FileArray {
 
   public void print() throws IOException {
     int[] dataOnFile = read();
-    String numberFormat = " %" + digits(max(dataOnFile)) + "d";
-    String limitFormat = "%0" + digits(dataOnFile.length) + "d";
-    String headerFormat = "%n[" + limitFormat + "-" + limitFormat + "]";
+    int digits = digits(max(dataOnFile));
+    int padding = digits(dataOnFile.length);
+    int minValue;
 
     for (int i = 0; i < dataOnFile.length; i++) {
       if (i % PRINT_COLUMNS == 0) {
-        // after first line we need a new line before print line header
-        System.out.print(String.format(headerFormat, i, Math.min(PRINT_COLUMNS - 1 + i, dataOnFile.length - 1)));
+        minValue = Math.min(PRINT_COLUMNS - 1 + i, dataOnFile.length - 1);
+        System.out.println();
+        System.out.printf("["+"%0"+padding+"d - "+"%0"+padding+"d]",i,minValue);
       }
-      System.out.print(String.format(numberFormat, dataOnFile[i]));
+      System.out.printf(" %" + digits + "d",dataOnFile[i]);
     }
     System.out.println();
   }
@@ -54,7 +52,7 @@ public class FileArray {
   public void incrementAll() throws IOException {
     int[] data = read();
     for (int i = 0; i < data.length; i++) {
-      data[i] = Math.min(data[i] + 1, MAX_VALUE);
+      data[i] = Math.min(data[i] + 1, UPPER_LIMIT);
     }
     write(data);
   }
@@ -81,7 +79,8 @@ public class FileArray {
   }
 
   private static int digits(int number) {
-    return String.valueOf(number).length();
+    int digit = (int) Math.ceil(Math.log10(number));
+    return digit;
   }
 
   private static int max(int[] data) {
@@ -92,8 +91,5 @@ public class FileArray {
     return max;
   }
 }
-
-
-
 
 

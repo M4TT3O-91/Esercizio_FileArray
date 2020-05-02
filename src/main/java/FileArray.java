@@ -36,13 +36,13 @@ public class FileArray {
     int[] dataOnFile = read();
     int digits = digits(max(dataOnFile));
     int padding = digits(dataOnFile.length);
-    int minValue;
+    int rowIndex;
 
     for (int i = 0; i < dataOnFile.length; i++) {
       if (i % PRINT_COLUMNS == 0) {
-        minValue = Math.min(PRINT_COLUMNS - 1 + i, dataOnFile.length - 1);
+        rowIndex = Math.min(PRINT_COLUMNS - 1 + i, dataOnFile.length - 1);
         System.out.println();
-        System.out.printf("[" + "%0" + padding + "d-" + "%0" + padding + "d]", i, minValue);
+        System.out.printf("[" + "%0" + padding + "d-" + "%0" + padding + "d]", i, rowIndex);
       }
       System.out.printf(" %" + digits + "d", dataOnFile[i]);
     }

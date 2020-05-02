@@ -6,9 +6,11 @@ public class Main {
   private static final int FILE_SIZE = 32;
 
   public static void main(String[] args) throws IOException {
-
+    String operation;
     if (args.length < 1) {
-      System.out.println("ATTENTION! Filename is needed you must provide it on command line.");
+      System.out.println("ATTENTION! No filename detected");
+      System.out.println("For run the code: java Main filename operation");
+      System.out.println("Operation: p for print and i for increment all");
       return;
     }
     String fileName = args[0];
@@ -29,18 +31,18 @@ public class Main {
       }
     }
 
-    String operation;
-
     for (int i = 1; i < args.length; i++) {
       operation = args[i].trim();
-      System.out.print("Operation: " + operation);
+
       if("p".equalsIgnoreCase(operation)) {
-          fileArray.print();
+        System.out.print("Print Operation : ");
+        fileArray.print();
       }else if ("i".equalsIgnoreCase(operation)) {
+        System.out.print("Increment All Operation");
         fileArray.incrementAll();
         System.out.println();
       }else{
-          System.out.println(operation + " - Invalid operation");
+        System.out.println("Unknown operation: " + operation);
       }
     }
   }

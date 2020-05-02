@@ -40,4 +40,3 @@ public class GZIPFileArray extends FileArray{
     dataOutputStream.close();
   }
 }
-

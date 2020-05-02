@@ -29,7 +29,7 @@ public class FileArray {
       data[i] = numberGenerator.nextInt(UPPER_LIMIT) + 1;
     }
     write(data);
-    System.out.println(String.format("File '%s' have been created with %s numbers", file.getAbsolutePath(), dim));
+    System.out.printf("File '%s' have been created with %d numbers %n", file.getAbsolutePath(), dim);
   }
 
   public void print() throws IOException {
@@ -42,7 +42,7 @@ public class FileArray {
       if (i % PRINT_COLUMNS == 0) {
         minValue = Math.min(PRINT_COLUMNS - 1 + i, dataOnFile.length - 1);
         System.out.println();
-        System.out.printf("[" + "%0" + padding + "d - " + "%0" + padding + "d]", i, minValue);
+        System.out.printf("[" + "%0" + padding + "d-" + "%0" + padding + "d]", i, minValue);
       }
       System.out.printf(" %" + digits + "d", dataOnFile[i]);
     }

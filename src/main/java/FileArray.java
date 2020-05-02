@@ -10,13 +10,13 @@ public class FileArray {
   private static final int UPPER_LIMIT = 1024;
   private static final int PRINT_COLUMNS = 5;
 
-  private final String fileName;
+  protected final String fileName;
 
   public FileArray(String fileName) throws IOException {
     this.fileName = fileName;
     File file = new File(fileName);
     int[] dataOnFile = read();
-    System.out.println("Read "+dataOnFile.length+" numbers from "+fileName);
+    System.out.println("Read " + dataOnFile.length + " numbers from " + fileName);
   }
 
   public FileArray(String fileName, int dim) throws IOException {
@@ -42,9 +42,9 @@ public class FileArray {
       if (i % PRINT_COLUMNS == 0) {
         minValue = Math.min(PRINT_COLUMNS - 1 + i, dataOnFile.length - 1);
         System.out.println();
-        System.out.printf("["+"%0"+padding+"d - "+"%0"+padding+"d]",i,minValue);
+        System.out.printf("[" + "%0" + padding + "d - " + "%0" + padding + "d]", i, minValue);
       }
-      System.out.printf(" %" + digits + "d",dataOnFile[i]);
+      System.out.printf(" %" + digits + "d", dataOnFile[i]);
     }
     System.out.println();
   }
@@ -57,7 +57,7 @@ public class FileArray {
     write(data);
   }
 
-  private int[] read() throws IOException {
+  protected int[] read() throws IOException {
     DataInputStream inputStream = new DataInputStream(new FileInputStream(new File(fileName)));
     int size = inputStream.readInt();
     int[] data = new int[size];
@@ -69,7 +69,7 @@ public class FileArray {
     return data;
   }
 
-  private void write(int[] data) throws IOException {
+  protected void write(int[] data) throws IOException {
     DataOutputStream outputStream = new DataOutputStream(new FileOutputStream(new File(fileName)));
     outputStream.writeInt(data.length);
     for (int number : data) {
@@ -91,5 +91,3 @@ public class FileArray {
     return max;
   }
 }
-
-
